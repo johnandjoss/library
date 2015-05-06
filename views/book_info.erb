@@ -1,0 +1,22 @@
+<!-- TODO: insert the number of copies of this book -->
+<h1>Book Info page</h1>
+<h2>Title: <%= @book.title()%></h2>
+<h3>Authors:</h3>
+<% if @authors.any?() %>
+  <form action='/books/<%= @book.id() %>' method="post">
+    <input type="hidden" name="_method" value="patch">
+    <% @authors.each() do |author| %>
+    <div class="checkbox">
+      <label>
+        <input type="checkbox" name="author_ids[]" value="<%= author.id()%>"><%= author.name() %>
+      </label>
+    </div>
+    <% end %>
+    <button type="submit">Add authors</button>
+  </form>
+<% end %>
+<ul>
+<% @book.authors().each() do |author| %>
+  <li><%= author.name()%></li>
+<%end%>
+</ul>

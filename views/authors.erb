@@ -1,0 +1,27 @@
+<h1>Welcome to the authors page</h1>
+
+<p>Add an author to the database:</p>
+
+<form action="/authors" method="post">
+  <label for="name">Author's name:</label>
+  <input id="name" name="name" type="text">
+
+  <button type="submit">Add author</button>
+</form>
+
+
+<% if @authors.any?() %>
+  <p>Click on a movie to see information about it and add actors to it:</p>
+
+  <ul>
+    <% @authors.each do |author| %>
+    <li><a href="/authors/<%= author.id() %>"><%= author.name() %></a></li>
+    <% end %>
+  </ul>
+<% else %>
+  <p>There are no authors added yet!</p>
+<% end %>
+
+<p><a href="/books">See all books</a></p>
+
+<p><a href="/">Return to Main Page</a></p>

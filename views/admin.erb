@@ -1,0 +1,35 @@
+<h1>Library Administration</h1>
+<h3>Librarians may edit book and author information here</h3>
+
+<p><a href="/books">Add a new book</a></p>
+<p><a href="/authors">Add a new author</a></p>
+
+
+<h3>Here are all the authors in this database:</h3>
+
+<% if @authors.any?() %>
+  <p>Click on an author to see information about them and mark which books they have written:</p>
+
+  <ul>
+    <% @authors.each do |author| %>
+      <li><a href="/authors/<%= author.id() %>"><%= author.name() %></a></li>
+    <% end %>
+  </ul>
+<% else %>
+  <p>There are no authers listed yet!</p>
+<% end %>
+
+
+<h3>Here are all the movies in this database:</h3>
+
+<% if @books.any?() %>
+  <p>Click on a movie to see information about it and mark which actors were in it:</p>
+
+  <ul>
+    <% @books.each do |book| %>
+      <li><a href="/books/<%= book.id() %>"><%= book.title() %></a></li>
+    <% end %>
+  </ul>
+<% else %>
+  <p>There are no books added yet!</p>
+<% end %>
