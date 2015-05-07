@@ -20,3 +20,10 @@
   <li><%= author.name()%></li>
 <%end%>
 </ul>
+
+
+<h3>Delete this book from the library catalog</h3>
+<form action='/books/<%= @book.id() %>' method='post'>
+  <input type='hidden' name='_method' value='delete'>
+  <button type='submit'>Delete Book</button>
+</form>

@@ -1,0 +1,29 @@
+<h1>Author Info page</h1>
+<h2>Name: <%= @author.name()%></h2>
+<h3>Books:</h3>
+<% if @books.any?() %>
+  <form action='/authors/<%= @author.id() %>' method="post">
+    <input type="hidden" name="_method" value="patch">
+    <% @books.each() do |book| %>
+    <div class="checkbox">
+      <label>
+        <input type="checkbox" name="book_ids[]" value="<%= book.id()%>"><%= book.title() %>
+      </label>
+    </div>
+    <% end %>
+    <button type="submit">Add books</button>
+  </form>
+<% end %>
+<ul>
+<% @author.books().each() do |book| %>
+  <li><%= book.title()%></li>
+<%end%>
+</ul>
+
+
+
+<h3>Delete this author from the library catalog</h3>
+<form action='/authors/<%= @author.id() %>' method='post'>
+  <input type='hidden' name='_method' value='delete'>
+  <button type='submit'>Delete Author</button>
+</form>

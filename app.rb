@@ -58,3 +58,35 @@ patch('/books/:id') do
   @authors = Author.all()
   erb(:book_info)
 end
+
+delete('/books/:id') do
+  book_id = params.fetch("id").to_i()
+  book = Book.find(book_id)
+  book.delete()
+  @books = Book.all()
+  erb(:books)
+end
+
+get('/authors/:id') do
+  id = params.fetch("id").to_i
+  @author = Author.find(id)
+  @books = Book.all()
+  erb(:author_info)
+end
+
+patch('/authors/:id') do
+  author_id = params.fetch("id").to_i
+  @author = Author.find(author_id)
+  book_ids = param.fetch("book_ids")
+  @author.update({:book_ids => book_ids})
+  @books = Book.all()
+  erb(:author_info)
+end
+
+delete('/authors/:id') do
+  author_id = params.fetch("id").to_i()
+  author = Author.find(author_id)
+  author.delete()
+  @authors = Author.all()
+  erb(:authors)
+end
