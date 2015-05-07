@@ -53,7 +53,7 @@ end
 patch('/books/:id') do
   book_id = params.fetch("id").to_i
   @book = Book.find(book_id)
-  author_ids = params.fetch("author_ids")
+  author_ids = params.fetch("author_ids", [])
   @book.update({:author_ids => author_ids})
   @authors = Author.all()
   erb(:book_info)
@@ -77,7 +77,7 @@ end
 patch('/authors/:id') do
   author_id = params.fetch("id").to_i
   @author = Author.find(author_id)
-  book_ids = param.fetch("book_ids")
+  book_ids = params.fetch("book_ids", [])
   @author.update({:book_ids => book_ids})
   @books = Book.all()
   erb(:author_info)
@@ -89,4 +89,11 @@ delete('/authors/:id') do
   author.delete()
   @authors = Author.all()
   erb(:authors)
+end
+
+post('/books/search') do
+  search_term = params.fetch("search_term")
+  @books = Book.search(search_term)
+  @authors = Author.search(search_term)
+  erb(:search_result)
 end

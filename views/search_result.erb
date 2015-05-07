@@ -1,0 +1,30 @@
+<h1>search results</h1>
+
+
+<% if @books.any?() %>
+<h2>Here are the books you searched for:</h2>
+  <p>Click on a book to see information about it and add authors to it:</p>
+
+  <ul>
+    <% @books.each do |book| %>
+    <li><a href="/books/<%= book.id() %>"><%= book.title() %></a></li>
+    <% end %>
+  </ul>
+<% else %>
+  <p>There are no books here yet!</p>
+<% end %>
+
+<h2>Here are the authors you searched for</h2>
+
+<% if @authors.any?() %>
+<h2>Here are the authors you searched for:</h2>
+  <p>Click on an author to see information about them and add books to their history:</p>
+
+  <ul>
+    <% @authors.each do |author| %>
+    <li><a href="/authors/<%= author.id() %>"><%= author.name() %></a></li>
+    <% end %>
+  </ul>
+<% else %>
+  <p>There are no authors here yet!</p>
+<% end %>

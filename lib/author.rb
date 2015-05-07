@@ -42,6 +42,29 @@ class Author
     end
   end
 
+  define_method(:books) do
+    book_authors = []
+    results = DB.exec("SELECT book_id FROM books_authors WHERE author_id = #{self.id()};")
+    results.each() do |result|
+      book_id = result.fetch("book_id").to_i()
+      book = DB.exec("SELECT * FROM books WHERE id = #{book_id};")
+      title = book.first().fetch("title")
+      book_authors.push(Book.new({:title => title, :id => book_id}))
+    end
+    book_authors
+  end
+
+  define_singleton_method(:search) do |search_name|
+    found_authors = []
+    results = DB.exec("SELECT * FROM authors WHERE name LIKE '%#{search_name}%'")
+    results.each() do |result|
+      id = result.fetch("id").to_i()
+      name = result.fetch("name")
+      found_authors.push(Author.new({:name => name, :id => id}))
+    end
+    found_authors
+  end
+
   define_method(:delete) do
     DB.exec("DELETE FROM books_authors WHERE author_id = #{self.id()};")
     DB.exec("DELETE FROM authors WHERE id = #{self.id()};")

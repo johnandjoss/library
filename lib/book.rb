@@ -58,4 +58,15 @@ class Book
     end
     author_books
   end
+
+  define_singleton_method(:search) do |search_title|
+    found_books = []
+    results = DB.exec("SELECT * FROM books WHERE title LIKE '%#{search_title}%'")
+    results.each() do |result|
+      id = result.fetch("id").to_i()
+      title = result.fetch("title")
+      found_books.push(Book.new({:title => title, :id => id}))
+    end
+    found_books
+  end
 end
