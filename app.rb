@@ -16,6 +16,7 @@ end
 get('/admin') do
   @books = Book.all()
   @authors = Author.all()
+  @overdue_items = Checkout.over_due()
   erb(:admin)
 end
 

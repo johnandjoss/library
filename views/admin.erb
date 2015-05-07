@@ -37,10 +37,20 @@
 
 <h3>Search for a book or author in this database:</h3>
 
-<form action='/books/search' method='post'>
-  <label for="search_term"></label>
-  <input id="search_term" name="search_term" type="text">
+<div class='form-group'>
+  <form action='/books/search' method='post'>
+    <label for="search_term">Search:</label>
+    <input id="search_term" name="search_term" type="text" class="form-control">
+    <br />
 
-  <button type ="submit"> Search</button>
+    <button type="submit" class="btn btn-info">Search</button>
 
-</form>
+  </form>
+</div>
+
+<h3>Current Overdue Items</h3>
+<ul>
+<% @overdue_items.each() do |item| %>
+  <li><%= Patron.find(item.patron_id()).name%> - <%= Book.find(item.book_id()).title() %> - Due: <%= item.due_date() %></li>
+<%end%>
+</ul>
