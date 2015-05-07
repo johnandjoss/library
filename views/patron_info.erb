@@ -1,0 +1,23 @@
+<h2>Name: <%= @patron.name()%></h2>
+<h3>Books Available For Checkout:</h3>
+<% if @books.any?() %>
+
+  <form action='/patrons/<%= @patron.id() %>' method="post">
+    <input type="hidden" name="_method" value="patch">
+    <% @books.each() do |book| %>
+    <div class="checkbox">
+      <label>
+        <input type="checkbox" name="book_ids[]" value="<%= book.id()%>"><%= book.title() %>
+      </label>
+    </div>
+    <% end %>
+    <button type="submit">Checkout Books</button>
+  </form>
+<% end %>
+
+
+<ul>
+<% @checkouts.each() do |checkout| %>
+  <li><%= Book.find(checkout.book_id()).title() %> - Due: <%= checkout.due_date() %></li>
+<%end%>
+</ul>

@@ -38,20 +38,35 @@ class Patron
     DB.exec("UPDATE patrons SET name = '#{@name}' WHERE id = #{self.id()};")
 
     attributes.fetch(:book_ids, []).each() do |book_id|
-      DB.exec("INSERT INTO checkouts (book_id, patron_id) VALUES ( #{book_id}, #{self.id()});")
+      due_date = Time.now() + (2*7*24*60*60)
+      new_checkout = Checkout.new({:id => nil, :book_id => book_id, :patron_id => @id, :due_date => due_date})
+      new_checkout.save()
     end
   end
 
-  define_method(:books) do
-    book_authors = []
-    results = DB.exec("SELECT book_id FROM books_authors WHERE author_id = #{self.id()};")
+  # define_method(:check_out) do
+  #   book_patrons = []
+  #   results = DB.exec("SELECT * FROM checkouts WHERE patron_id = #{self.id()};")
+  #   results.each() do |result|
+  #     book_id = result.fetch("book_id").to_i()
+  #     book = DB.exec("SELECT * FROM books WHERE id = #{book_id};")
+  #     title = book.first().fetch("title")
+  #     book_patrons.push(Book.new({:title => title, :id => book_id}))
+  #   end
+  #   book_patrons
+  # end
+
+  define_method(:check_out) do
+    patron_checkouts = []
+    results = DB.exec("SELECT * FROM checkouts WHERE patron_id = #{self.id()};")
     results.each() do |result|
-      book_id = result.fetch("book_id").to_i()
-      book = DB.exec("SELECT * FROM books WHERE id = #{book_id};")
-      title = book.first().fetch("title")
-      book_authors.push(Book.new({:title => title, :id => book_id}))
+      book_id = result.fetch("book_id").to_i
+      patron_id = result.fetch("patron_id").to_i
+      due_date = result.fetch('due_date')
+      id = result.fetch("id").to_i
+      patron_checkouts.push(Checkout.new({:book_id => book_id, :patron_id => patron_id, :id => id, :due_date => due_date}))
     end
-    book_authors
+    patron_checkouts
   end
 
   define_singleton_method(:search) do |search_name|

@@ -90,4 +90,18 @@ describe("The library path", {:type => :feature}) do
     expect(page).to have_content("Bob")
     expect(page).to have_content("Bobs book")
   end
+
+  it("adds a book to a patron") do
+    visit('/books')
+    fill_in('title', :with => 'Bobs book')
+    click_button('Add book')
+    visit('/')
+    click_link('Library Members')
+    fill_in('name', :with => "Kevin")
+    click_button('Add New Member')
+    click_link('Kevin')
+    page.check('Bobs book')
+    click_button('Checkout Books')
+    expect(page).to have_content('Bobs book')
+  end
 end

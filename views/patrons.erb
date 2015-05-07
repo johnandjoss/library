@@ -1,0 +1,26 @@
+<h1>All Library Members</h1>
+
+<% if @patrons.any?() %>
+  <p>Current members</p>
+  <p>Click on a member's name to see information about them</P>
+  <ul>
+    <% @patrons.each do |patron| %>
+    <li><a href="/patrons/<%= patron.id() %>"><%= patron.name() %></a></li>
+    <% end %>
+  </ul>
+<% else %>
+  <p>There are no members added yet!</p>
+<% end %>
+
+
+
+<p>Add a member to the library:</p>
+
+<form action="/patrons" method="post">
+  <label for="name">Patron's name:</label>
+  <input id="name" name="name" type="text">
+
+  <button type="submit">Add New Member</button>
+</form>
+
+<p><a href="/">Return to Main Page</a></p>

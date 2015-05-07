@@ -3,6 +3,8 @@ require('sinatra/reloader')
 also_reload('lib/**/*.rb')
 require('./lib/book')
 require('./lib/author')
+require('./lib/patron')
+require('./lib/checkout')
 require('pg')
 
 DB = PG.connect({:dbname => "library_database"})
@@ -96,4 +98,35 @@ post('/books/search') do
   @books = Book.search(search_term)
   @authors = Author.search(search_term)
   erb(:search_result)
+end
+
+get('/patrons') do
+  @patrons = Patron.all()
+  erb(:patrons)
+end
+
+post('/patrons') do
+  name = params.fetch("name")
+  new_patron = Patron.new({:name => name, :id => nil})
+  new_patron.save()
+  @patrons = Patron.all()
+  erb(:patrons)
+end
+
+get('/patrons/:id') do
+  patron_id = params.fetch("id").to_i
+  @patron = Patron.find(patron_id)
+  @checkouts = Checkout.find_by_patron(patron_id)
+  @books = Book.all()
+  erb(:patron_info)
+end
+
+patch('/patrons/:id') do
+  patron_id = params.fetch("id").to_i
+  @patron = Patron.find(patron_id)
+  book_ids = params.fetch("book_ids", [])
+  @patron.update({:book_ids => book_ids})
+  @checkouts = Checkout.find_by_patron(patron_id)
+  @books = Book.all()
+  erb(:patron_info)
 end
